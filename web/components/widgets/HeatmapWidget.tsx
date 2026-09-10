@@ -122,7 +122,7 @@ export default function HeatmapWidget() {
     return () => obs.disconnect();
   }, [data, setActiveSymbol]);
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (!data) return <div className="p-2 dim">Loading heatmap…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (!data) return <div className="p-2 dim">加载热力图中…</div>;
   return <div ref={ref} className="w-full h-full" />;
 }

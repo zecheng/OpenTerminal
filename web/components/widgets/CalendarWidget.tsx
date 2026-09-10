@@ -30,19 +30,19 @@ const IMPACT_CLASS: Record<EconEvent["impact"], string> = {
 };
 
 const TIMEZONES: Array<{ label: string; zone: string | undefined }> = [
-  { label: "Local", zone: undefined },
+  { label: "本地", zone: undefined },
   { label: "UTC", zone: "UTC" },
-  { label: "New York", zone: "America/New_York" },
-  { label: "Chicago", zone: "America/Chicago" },
-  { label: "London", zone: "Europe/London" },
-  { label: "Frankfurt", zone: "Europe/Berlin" },
-  { label: "Tokyo", zone: "Asia/Tokyo" },
-  { label: "Sydney", zone: "Australia/Sydney" },
+  { label: "纽约", zone: "America/New_York" },
+  { label: "芝加哥", zone: "America/Chicago" },
+  { label: "伦敦", zone: "Europe/London" },
+  { label: "法兰克福", zone: "Europe/Berlin" },
+  { label: "东京", zone: "Asia/Tokyo" },
+  { label: "悉尼", zone: "Australia/Sydney" },
 ];
 
 function EconomicTab() {
   const [minImpact, setMinImpact] = useState<"all" | "medium">("medium");
-  const [tz, setTz] = useState<string>("Local");
+  const [tz, setTz] = useState<string>("本地");
 
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["econ-calendar"],
@@ -55,8 +55,8 @@ function EconomicTab() {
     [data, minImpact]
   );
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (isLoading) return <div className="p-2 dim">Loading calendar…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (isLoading) return <div className="p-2 dim">加载日历中…</div>;
 
   const zone = TIMEZONES.find((t) => t.label === tz)?.zone;
 
@@ -64,10 +64,10 @@ function EconomicTab() {
     <div>
       <div className="flex gap-1 p-1 items-center flex-wrap">
         <button className={`term-btn ${minImpact === "medium" ? "active" : ""}`} onClick={() => setMinImpact("medium")}>
-          HIGH+MED
+          高+中
         </button>
         <button className={`term-btn ${minImpact === "all" ? "active" : ""}`} onClick={() => setMinImpact("all")}>
-          ALL
+          全部
         </button>
         <span className="w-2" />
         <select
@@ -85,12 +85,12 @@ function EconomicTab() {
       <table className="data-table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Ccy</th>
-            <th>Event</th>
-            <th>Forecast</th>
-            <th>Previous</th>
-            <th>Actual</th>
+            <th>日期</th>
+            <th>币种</th>
+            <th>事件</th>
+            <th>预期</th>
+            <th>前值</th>
+            <th>实际</th>
           </tr>
         </thead>
         <tbody>
@@ -115,12 +115,12 @@ function EconomicTab() {
           ))}
         </tbody>
       </table>
-      {events.length === 0 && <div className="p-3 dim">No events in this window.</div>}
+      {events.length === 0 && <div className="p-3 dim">此时间段无事件。</div>}
     </div>
   );
 }
 
-const fmtDate = (ts: number | null) => (ts ? new Date(ts * 1000).toLocaleDateString("en-US") : "—");
+const fmtDate = (ts: number | null) => (ts ? new Date(ts * 1000).toLocaleDateString("zh-CN") : "—");
 
 type EarningsHistoryRow = {
   fiscalQtrEnd: string;
@@ -146,20 +146,20 @@ function EarningsHistoryRows({ symbol }: { symbol: string }) {
     staleTime: 3_600_000,
   });
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (isLoading) return <div className="p-2 dim">Loading history for {symbol}…</div>;
-  if (data.length === 0) return <div className="p-2 dim">No earnings history for {symbol}.</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (isLoading) return <div className="p-2 dim">加载 {symbol} 财报历史中…</div>;
+  if (data.length === 0) return <div className="p-2 dim">{symbol} 无财报历史。</div>;
 
   return (
     <table className="data-table">
       <thead>
         <tr>
-          <th>Quarter</th>
-          <th>Reported</th>
-          <th>Forecast</th>
-          <th>Actual</th>
-          <th>Surprise</th>
-          <th>Day After</th>
+          <th>季度</th>
+          <th>发布日期</th>
+          <th>预期</th>
+          <th>实际</th>
+          <th>超预期</th>
+          <th>次日</th>
         </tr>
       </thead>
       <tbody>
@@ -202,17 +202,17 @@ function EarningsTab() {
     [data]
   );
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (isLoading) return <div className="p-2 dim">Loading earnings…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (isLoading) return <div className="p-2 dim">加载财报中…</div>;
 
   return (
     <table className="data-table">
       <thead>
         <tr>
-          <th>Sym</th>
-          <th>Last Earnings</th>
-          <th>Next Earnings</th>
-          <th>EPS Est.</th>
+          <th>代码</th>
+          <th>上次财报</th>
+          <th>下次财报</th>
+          <th>EPS 预估</th>
         </tr>
       </thead>
       <tbody>
@@ -221,7 +221,7 @@ function EarningsTab() {
             <tr
               onClick={() => setExpanded(expanded === e.symbol ? null : e.symbol)}
               className="cursor-pointer"
-              title="Click for earnings history"
+              title="点击查看财报历史"
             >
               <td className="!text-left text-[var(--text)] font-bold underline decoration-1">{e.symbol}</td>
               <td className="dim">{fmtDate(e.lastEarningsDate)}</td>
@@ -240,7 +240,7 @@ function EarningsTab() {
         {sorted.length === 0 && (
           <tr>
             <td colSpan={4} className="dim p-3">
-              No upcoming earnings data for your watchlist.
+              自选股暂无即将到来的财报数据。
             </td>
           </tr>
         )}
@@ -256,10 +256,10 @@ export default function CalendarWidget() {
     <div>
       <div className="flex gap-1 p-1">
         <button className={`term-btn ${tab === "econ" ? "active" : ""}`} onClick={() => setTab("econ")}>
-          ECONOMIC
+          经济日历
         </button>
         <button className={`term-btn ${tab === "earnings" ? "active" : ""}`} onClick={() => setTab("earnings")}>
-          EARNINGS
+          财报
         </button>
       </div>
       {tab === "econ" ? <EconomicTab /> : <EarningsTab />}

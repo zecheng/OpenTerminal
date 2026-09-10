@@ -12,6 +12,7 @@ import * as news from "../providers/news.js";
 import * as econcalendar from "../providers/econcalendar.js";
 import * as finra from "../providers/finra.js";
 import * as secedgar from "../providers/secedgar.js";
+import * as china from "../providers/china.js";
 
 export const marketRouter = Router();
 
@@ -123,6 +124,18 @@ async function getQuotes(symbols: string[]): Promise<yahoo.Quote[]> {
     remaining = remaining.filter((s) => !fetched.has(s));
   }
 
+  // A 股（6 位数字代码或 "1.000001" 带市场前缀）走东方财富，一次批量拉取。
+  const chinaSymbols = remaining.filter((s) => china.isChinaSymbol(s));
+  if (chinaSymbols.length > 0) {
+    try {
+      const rows = await china.quotes(chinaSymbols);
+      for (const q of rows) fetched.set(q.symbol, q);
+      remaining = remaining.filter((s) => !fetched.has(s));
+    } catch {
+      // fall through to the US providers below (A 股不会被误判，最终整体失败)
+    }
+  }
+
   const vixSymbols = remaining.filter((s) => isVix(s));
   if (vixSymbols.length > 0) {
     const results = await Promise.allSettled(vixSymbols.map(() => vixQuote()));
@@ -222,6 +235,8 @@ marketRouter.get("/history/:symbol", async (req, res) => {
     const data = await cached(`history:${symbol}:${rangeKey}`, HISTORY_TTL, () =>
       binance.CRYPTO_SYMBOLS.has(symbol)
         ? binance.history(symbol, rangeKey)
+        : china.isChinaSymbol(symbol)
+        ? china.history(symbol, rangeKey)
         : isVix(symbol)
         ? vixHistory(rangeKey)
         : withFallback([
@@ -257,12 +272,25 @@ marketRouter.get("/search", async (req, res) => {
   const q = String(req.query.q ?? "").trim();
   if (!q) return res.json([]);
   try {
-    const data = await cached(`search:${q.toLowerCase()}`, 300_000, () =>
-      withFallback([
+    const data = await cached(`search:${q.toLowerCase()}`, 300_000, async () => {
+      // A 股查询（中文名或 4-6 位纯数字代码）走东方财富，结果置顶；
+      // 美股 ticker 走 TradingView/Yahoo。拼音搜索暂未覆盖，用中文或代码即可。
+      const isChinaQuery = /[\u4e00-\u9fa5]/.test(q) || /^\d{4,6}$/.test(q);
+      const chinaResults = isChinaQuery ? await china.search(q).catch(() => []) : [];
+      const intlResults = await withFallback([
         ["tradingview", () => tradingview.search(q)],
         ["yahoo", () => yahoo.search(q)],
-      ])
-    );
+      ]).catch(() => []);
+      // 按 symbol 去重合并，A 股结果优先展示。
+      const seen = new Set<string>();
+      const merged: tradingview.SearchResult[] = [];
+      for (const r of [...chinaResults, ...intlResults]) {
+        if (seen.has(r.symbol)) continue;
+        seen.add(r.symbol);
+        merged.push(r);
+      }
+      return merged.slice(0, 15);
+    });
     res.json(data);
   } catch (err) {
     fail(req, res, err);

@@ -21,27 +21,27 @@ export default function QuoteWidget({ widget }: { widget: WidgetInstance }) {
     staleTime: 3_600_000,
   });
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (!data) return <div className="p-2 dim">Loading {symbol}…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (!data) return <div className="p-2 dim">加载 {symbol} 中…</div>;
 
   const rows: Array<[string, string, string?]> = [
-    ["Open", fmt(data.open)],
-    ["High", fmt(data.high)],
-    ["Low", fmt(data.low)],
-    ["Prev Close", fmt(data.previousClose)],
-    ["Bid", fmt(data.bid)],
-    ["Ask", fmt(data.ask)],
-    ["Volume", fmtBig(data.volume)],
-    ["Avg Vol 3M", fmtBig(data.avgVolume)],
-    ...(shortVol ? ([["Short Vol %", fmt(shortVol.shortVolumePercent, 1) + "%"]] as Array<[string, string]>) : []),
-    ["Mkt Cap", fmtBig(data.marketCap)],
-    ["P/E (ttm)", fmt(data.pe)],
-    ["EPS (ttm)", fmt(data.eps)],
-    ["Div Yield", data.dividendYield !== null ? fmt(data.dividendYield * 100) + "%" : "—"],
-    ["52W High", fmt(data.week52High)],
-    ["52W Low", fmt(data.week52Low)],
+    ["今开", fmt(data.open)],
+    ["最高", fmt(data.high)],
+    ["最低", fmt(data.low)],
+    ["昨收", fmt(data.previousClose)],
+    ["买价", fmt(data.bid)],
+    ["卖价", fmt(data.ask)],
+    ["成交量", fmtBig(data.volume)],
+    ["3月均量", fmtBig(data.avgVolume)],
+    ...(shortVol ? ([["做空占比 %", fmt(shortVol.shortVolumePercent, 1) + "%"]] as Array<[string, string]>) : []),
+    ["总市值", fmtBig(data.marketCap)],
+    ["市盈率 (ttm)", fmt(data.pe)],
+    ["每股收益 (ttm)", fmt(data.eps)],
+    ["股息率", data.dividendYield !== null ? fmt(data.dividendYield * 100) + "%" : "—"],
+    ["52周最高", fmt(data.week52High)],
+    ["52周最低", fmt(data.week52Low)],
     ["Beta", fmt(data.beta)],
-    ["Shares Out", fmtBig(data.sharesOutstanding)],
+    ["总股本", fmtBig(data.sharesOutstanding)],
   ];
 
   return (

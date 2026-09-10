@@ -60,7 +60,7 @@ export default function CommandPalette() {
             if (e.key === "ArrowUp") setSelected((s) => Math.max(s - 1, 0));
             if (e.key === "Enter" && results[selected]) pick(results[selected], e.shiftKey);
           }}
-          placeholder="Ticker, company, ETF, crypto, index…  (Enter = load · Shift+Enter = load + watchlist)"
+          placeholder="股票代码、公司名、ETF、加密货币、指数…（回车=加载 · Shift+回车=加载并加入自选）"
           className="w-full !border-0 !border-b !border-[var(--border)] px-3 py-2 text-[13px]"
         />
         <div className="max-h-80 overflow-auto">
@@ -79,7 +79,7 @@ export default function CommandPalette() {
             </div>
           ))}
           {query && results.length === 0 && (
-            <div className="px-3 py-3 dim">No results for “{query}”</div>
+            <div className="px-3 py-3 dim">未找到“{query}”的相关结果</div>
           )}
         </div>
       </div>

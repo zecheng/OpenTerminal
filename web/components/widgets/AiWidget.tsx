@@ -44,16 +44,16 @@ export default function AiWidget() {
       <div ref={scrollRef} className="flex-1 overflow-auto p-2 space-y-2 min-h-0">
         {messages.length === 0 && (
           <div className="dim">
-            Ask about {activeSymbol}, the market, an indicator, or a headline. The current quote is shared as context.
+            可以询问 {activeSymbol}、市场行情、技术指标或新闻头条，当前报价会作为上下文共享。
           </div>
         )}
         {messages.map((m, i) => (
           <div key={i}>
-            <span className={m.role === "user" ? "amber" : "up"}>{m.role === "user" ? "YOU" : "AI"} ›</span>{" "}
+            <span className={m.role === "user" ? "amber" : "up"}>{m.role === "user" ? "你" : "AI"} ›</span>{" "}
             <span className="whitespace-pre-wrap">{m.content}</span>
           </div>
         ))}
-        {chat.isPending && <div className="dim">thinking…</div>}
+        {chat.isPending && <div className="dim">思考中…</div>}
         {chat.error && <div className="down">{(chat.error as Error).message}</div>}
       </div>
       <div className="flex gap-1 p-1 border-t border-[var(--border)] shrink-0">
@@ -62,9 +62,9 @@ export default function AiWidget() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder={`Ask about ${activeSymbol}…`}
+          placeholder={`询问 ${activeSymbol}…`}
         />
-        <button className="term-btn" onClick={send}>SEND</button>
+        <button className="term-btn" onClick={send}>发送</button>
       </div>
     </div>
   );

@@ -29,15 +29,15 @@ export default function RecapWidget() {
     refetchInterval: 15_000,
   });
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (!data) return <div className="p-2 dim">Loading market recap…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (!data) return <div className="p-2 dim">加载市场综述中…</div>;
 
   return (
     <div>
       <div className="px-2 py-1 flex justify-between items-baseline">
-        <span className="dim text-[10px] uppercase">Market Recap</span>
+        <span className="dim text-[10px] uppercase">市场综述</span>
         <span className="dim text-[9px]">
-          Updated {new Date(data.updatedAt).toLocaleTimeString()}
+          更新于 {new Date(data.updatedAt).toLocaleTimeString()}
         </span>
       </div>
 
@@ -46,9 +46,9 @@ export default function RecapWidget() {
       <table className="data-table">
         <thead>
           <tr>
-            <th>Index</th>
-            <th>Last</th>
-            <th>Chg%</th>
+            <th>指数</th>
+            <th>最新</th>
+            <th>涨跌%</th>
           </tr>
         </thead>
         <tbody>
@@ -78,7 +78,7 @@ export default function RecapWidget() {
 
       <div className="grid grid-cols-2 gap-x-2 px-2 py-1">
         <div>
-          <div className="dim text-[10px] uppercase mb-1">Top gainers</div>
+          <div className="dim text-[10px] uppercase mb-1">领涨</div>
           {data.gainers.map((r) => (
             <div key={r.symbol} className="flex justify-between cursor-pointer hover:bg-[#161616]" onClick={() => setActiveSymbol(r.symbol)}>
               <span className="truncate mr-1">{r.symbol}</span>
@@ -89,7 +89,7 @@ export default function RecapWidget() {
           ))}
         </div>
         <div>
-          <div className="dim text-[10px] uppercase mb-1">Top losers</div>
+          <div className="dim text-[10px] uppercase mb-1">领跌</div>
           {data.losers.map((r) => (
             <div key={r.symbol} className="flex justify-between cursor-pointer hover:bg-[#161616]" onClick={() => setActiveSymbol(r.symbol)}>
               <span className="truncate mr-1">{r.symbol}</span>
@@ -102,7 +102,7 @@ export default function RecapWidget() {
       </div>
 
       <div className="px-2 py-1 border-t border-[#161616]">
-        <div className="dim text-[10px] uppercase mb-1">Sector performance</div>
+        <div className="dim text-[10px] uppercase mb-1">行业表现</div>
         {data.sectors.map((s) => (
           <div key={s.sector} className="flex justify-between">
             <span className="truncate mr-1">{s.sector}</span>
@@ -112,7 +112,7 @@ export default function RecapWidget() {
       </div>
 
       <div className="border-t border-[#161616]">
-        <div className="dim text-[10px] uppercase px-2 pt-1">Headlines</div>
+        <div className="dim text-[10px] uppercase px-2 pt-1">头条</div>
         {data.news.map((n, i) => (
           <a
             key={i}

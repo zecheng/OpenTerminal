@@ -84,10 +84,10 @@ const SIZE_BY_TYPE: Record<WidgetType, { w: number; h: number }> = {
 export const useTerminal = create<TerminalState>()(
   persist(
     (set) => ({
-      activeSymbol: "AAPL",
+      activeSymbol: "600519",
       widgets: DEFAULT_WIDGETS,
       layout: DEFAULT_LAYOUT,
-      watchlist: ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "SPY"],
+      watchlist: ["600519", "000001", "300750", "601318", "000858", "600036", "601899", "1.000001"],
       commandOpen: false,
       setActiveSymbol: (s) => set({ activeSymbol: s.toUpperCase() }),
       setCommandOpen: (open) => set({ commandOpen: open }),

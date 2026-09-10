@@ -32,14 +32,14 @@ export default function TvWidget() {
         video.play().catch(() => {});
       });
       hls.on(Hls.Events.ERROR, (_evt, data) => {
-        if (data.fatal) setError(`Stream unavailable right now (${data.details}). Try another channel.`);
+        if (data.fatal) setError(`当前频道暂时无法播放（${data.details}），请尝试其他频道。`);
       });
       return () => hls.destroy();
     } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
       video.src = channel.url;
       video.play().catch(() => {});
     } else {
-      setError("Your browser doesn't support HLS playback.");
+      setError("当前浏览器不支持 HLS 播放。");
     }
   }, [channel]);
 

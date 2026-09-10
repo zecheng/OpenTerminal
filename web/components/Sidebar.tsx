@@ -3,21 +3,21 @@
 import { useTerminal, type WidgetType } from "../store/terminal";
 
 const ITEMS: Array<{ type: WidgetType; label: string; key: string }> = [
-  { type: "chart", label: "CHART", key: "⌥1" },
-  { type: "quote", label: "QUOTE", key: "⌥2" },
-  { type: "news", label: "NEWS", key: "⌥3" },
-  { type: "screener", label: "SCREENER", key: "⌥4" },
-  { type: "heatmap", label: "HEATMAP", key: "⌥5" },
-  { type: "crypto", label: "CRYPTO", key: "⌥6" },
-  { type: "options", label: "OPTIONS", key: "⌥7" },
-  { type: "portfolio", label: "PORTFOLIO", key: "⌥8" },
-  { type: "ai", label: "AI ASSIST", key: "⌥9" },
-  { type: "watchlist", label: "WATCHLIST", key: "" },
-  { type: "macro", label: "MACRO", key: "" },
-  { type: "calendar", label: "CALENDAR", key: "" },
-  { type: "insider", label: "INSIDER", key: "" },
-  { type: "tv", label: "LIVE TV", key: "" },
-  { type: "recap", label: "MARKET RECAP", key: "" },
+  { type: "chart", label: "图表", key: "⌥1" },
+  { type: "quote", label: "报价", key: "⌥2" },
+  { type: "news", label: "新闻", key: "⌥3" },
+  { type: "screener", label: "选股器", key: "⌥4" },
+  { type: "heatmap", label: "热力图", key: "⌥5" },
+  { type: "crypto", label: "加密货币", key: "⌥6" },
+  { type: "options", label: "期权链", key: "⌥7" },
+  { type: "portfolio", label: "投资组合", key: "⌥8" },
+  { type: "ai", label: "AI 助手", key: "⌥9" },
+  { type: "watchlist", label: "自选股", key: "" },
+  { type: "macro", label: "宏观", key: "" },
+  { type: "calendar", label: "日历", key: "" },
+  { type: "insider", label: "内部交易", key: "" },
+  { type: "tv", label: "财经直播", key: "" },
+  { type: "recap", label: "市场综述", key: "" },
 ];
 
 export default function Sidebar() {
@@ -27,7 +27,7 @@ export default function Sidebar() {
   return (
     <nav className="w-32 bg-[var(--panel)] border-r border-[var(--border)] flex flex-col shrink-0">
       <div className="dim px-2 py-1 text-[10px] uppercase tracking-wider border-b border-[var(--border)]">
-        Add widget
+        添加组件
       </div>
       {ITEMS.map((item) => (
         <button
@@ -44,7 +44,7 @@ export default function Sidebar() {
           onClick={resetWorkspace}
           className="w-full text-left px-2 py-1.5 text-[11px] dim hover:text-[var(--down)]"
         >
-          RESET LAYOUT
+          重置布局
         </button>
       </div>
     </nav>

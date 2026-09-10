@@ -22,14 +22,14 @@ type InsiderTransaction = {
 
 // SEC's single-letter transaction codes, the ones that actually show up in practice.
 const CODE_LABEL: Record<string, string> = {
-  P: "Open market buy",
-  S: "Open market sale",
-  A: "Grant/award",
-  M: "Option exercise",
-  G: "Gift",
-  F: "Tax withholding",
-  C: "Conversion",
-  D: "Disposition to issuer",
+  P: "公开市场买入",
+  S: "公开市场卖出",
+  A: "授予/奖励",
+  M: "期权行权",
+  G: "赠与",
+  F: "税务扣缴",
+  C: "转换",
+  D: "向发行人处置",
 };
 
 export default function InsiderWidget({ widget }: { widget: WidgetInstance }) {
@@ -40,22 +40,22 @@ export default function InsiderWidget({ widget }: { widget: WidgetInstance }) {
     staleTime: 3_600_000,
   });
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (isLoading) return <div className="p-2 dim">Loading insider transactions for {symbol}…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (isLoading) return <div className="p-2 dim">加载 {symbol} 内部交易中…</div>;
 
   return (
     <div>
       <table className="data-table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Insider</th>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Shares</th>
-            <th>Price</th>
-            <th>Value</th>
-            <th>Owned After</th>
+            <th>日期</th>
+            <th>内部人</th>
+            <th>职务</th>
+            <th>类型</th>
+            <th>股数</th>
+            <th>价格</th>
+            <th>金额</th>
+            <th>持有后</th>
           </tr>
         </thead>
         <tbody>
@@ -64,7 +64,7 @@ export default function InsiderWidget({ widget }: { widget: WidgetInstance }) {
               <td className="!text-left dim whitespace-nowrap">{t.transactionDate}</td>
               <td className="!text-left">{t.ownerName}</td>
               <td className="!text-left dim truncate max-w-[140px]" title={t.ownerTitle ?? ""}>
-                {t.ownerTitle ?? (t.isDirector ? "Director" : t.isTenPercentOwner ? "10%+ Owner" : "—")}
+                {t.ownerTitle ?? (t.isDirector ? "董事" : t.isTenPercentOwner ? "10%以上股东" : "—")}
               </td>
               <td className={t.acquiredDisposed === "A" ? "up" : t.acquiredDisposed === "D" ? "down" : "dim"}>
                 {CODE_LABEL[t.transactionCode] ?? t.transactionCode}
@@ -78,7 +78,7 @@ export default function InsiderWidget({ widget }: { widget: WidgetInstance }) {
           {data.length === 0 && (
             <tr>
               <td colSpan={8} className="dim p-3">
-                No recent open-market insider transactions for {symbol}.
+                {symbol} 近期无公开市场内部交易。
               </td>
             </tr>
           )}

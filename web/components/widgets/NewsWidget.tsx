@@ -24,10 +24,10 @@ export default function NewsWidget({ widget }: { widget: WidgetInstance }) {
           {symbol}
         </button>
         <button className={`term-btn ${mode === "global" ? "active" : ""}`} onClick={() => setMode("global")}>
-          GLOBAL
+          全球
         </button>
       </div>
-      {isLoading && <div className="p-2 dim">Loading news…</div>}
+      {isLoading && <div className="p-2 dim">加载新闻中…</div>}
       {data.map((n, i) => (
         <a
           key={i}

@@ -42,20 +42,20 @@ export default function CryptoWidget() {
     refetchInterval: 30_000,
   });
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
 
   return (
     <div>
       {global && (
         <div className="flex gap-4 px-2 py-1 border-b border-[var(--border)] dim">
-          <span>Total MCap <span className="text-[var(--text)]">{fmtBig(global.totalMarketCap)}</span></span>
+          <span>总市值 <span className="text-[var(--text)]">{fmtBig(global.totalMarketCap)}</span></span>
           <span>BTC.D <span className="amber">{fmt(global.btcDominance, 1)}%</span></span>
           <span>ETH.D <span className="amber">{fmt(global.ethDominance, 1)}%</span></span>
         </div>
       )}
       <table className="data-table">
         <thead>
-          <tr><th>#</th><th>Asset</th><th>Price</th><th>24h%</th><th>MCap</th><th>Vol 24h</th><th>7d</th></tr>
+          <tr><th>#</th><th>资产</th><th>价格</th><th>24h%</th><th>市值</th><th>24h成交量</th><th>7天</th></tr>
         </thead>
         <tbody>
           {data.map((c) => (

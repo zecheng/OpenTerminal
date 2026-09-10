@@ -34,7 +34,7 @@ function marketStateNY(): { label: string; open: boolean } {
   const day = ny.getDay();
   const mins = ny.getHours() * 60 + ny.getMinutes();
   const open = day >= 1 && day <= 5 && mins >= 570 && mins < 960; // 09:30–16:00
-  return { label: open ? "NYSE OPEN" : "NYSE CLOSED", open };
+  return { label: open ? "美股开盘" : "美股收盘", open };
 }
 
 export default function TopBar() {
@@ -53,21 +53,21 @@ export default function TopBar() {
     <header className="flex items-center gap-4 px-3 h-8 bg-[var(--panel-2)] border-b border-[var(--border)] text-[11px] shrink-0">
       <span className="amber font-bold tracking-widest">OPENTERMINAL</span>
       <span className={market.open ? "up" : "down"}>● {market.label}</span>
-      <Clock tz="America/New_York" label="NY" />
-      <Clock tz="Europe/Rome" label="MIL" />
-      <Clock tz="Europe/London" label="LDN" />
-      <Clock tz="Asia/Tokyo" label="TYO" />
+      <Clock tz="America/New_York" label="纽约" />
+      <Clock tz="Europe/Rome" label="米兰" />
+      <Clock tz="Europe/London" label="伦敦" />
+      <Clock tz="Asia/Tokyo" label="东京" />
       <button
         className="term-btn flex-1 max-w-md text-left dim"
         onClick={() => setCommandOpen(true)}
       >
-        {activeSymbol} — search symbol… <span className="float-right">⌘K</span>
+        {activeSymbol} — 搜索代码… <span className="float-right">⌘K</span>
       </button>
       <span className="dim ml-auto">
-        feeds:{" "}
+        数据源:{" "}
         {healthy.length > 0
           ? healthy.map((p) => `${p.name} ${p.lastLatencyMs ?? "—"}ms`).join(" · ")
-          : "connecting…"}
+          : "连接中…"}
       </span>
       <span className={status?.ai ? "up" : "dim"}>AI {status?.ai ? "●" : "○"}</span>
     </header>

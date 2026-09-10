@@ -80,7 +80,7 @@ function SymbolTag({ widget, activeSymbol }: { widget: WidgetInstance; activeSym
   return (
     <span
       className="ml-2 text-[var(--text)] cursor-pointer hover:text-[var(--amber)]"
-      title="Click to set this widget's ticker"
+      title="点击设置此组件的代码"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={() => setEditing(true)}
     >
@@ -90,10 +90,10 @@ function SymbolTag({ widget, activeSymbol }: { widget: WidgetInstance; activeSym
 }
 
 const TITLES: Record<string, string> = {
-  quote: "Quote", chart: "Chart", watchlist: "Watchlist", news: "News",
-  heatmap: "Heatmap", screener: "Screener", crypto: "Crypto",
-  macro: "Macro / Indexes", options: "Option Chain", portfolio: "Portfolio", ai: "AI Assistant",
-  calendar: "Calendar", insider: "Insider Transactions", tv: "Live TV", recap: "Market Recap",
+  quote: "报价", chart: "图表", watchlist: "自选股", news: "新闻",
+  heatmap: "热力图", screener: "选股器", crypto: "加密货币",
+  macro: "宏观 / 指数", options: "期权链", portfolio: "投资组合", ai: "AI 助手",
+  calendar: "日历", insider: "内部交易", tv: "财经直播", recap: "市场综述",
 };
 
 export default function Workspace() {
@@ -127,7 +127,7 @@ export default function Workspace() {
               <span className="flex gap-2 items-center">
                 {symbolAware.has(w.type) && (
                   <button
-                    title={w.linked ? "Linked to active symbol (click to unlink)" : "Unlinked (click to link)"}
+                    title={w.linked ? "已关联当前代码（点击解除关联）" : "未关联（点击关联）"}
                     onMouseDown={(e) => e.stopPropagation()}
                     onClick={() => toggleLinked(w.id)}
                     className={w.linked ? "text-[var(--amber)]" : "dim"}

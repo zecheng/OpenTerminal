@@ -35,14 +35,14 @@ export default function WatchlistWidget() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Add ticker…"
+          placeholder="添加代码…"
           className="flex-1"
         />
         <button className="term-btn" type="submit">+</button>
       </form>
       <table className="data-table">
         <thead>
-          <tr><th>Sym</th><th>Last</th><th>Chg%</th><th>Vol</th><th></th></tr>
+          <tr><th>代码</th><th>最新</th><th>涨跌%</th><th>成交量</th><th></th></tr>
         </thead>
         <tbody>
           {watchlist.map((sym) => {

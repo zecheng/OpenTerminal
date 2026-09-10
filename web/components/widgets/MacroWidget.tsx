@@ -20,13 +20,13 @@ export default function MacroWidget() {
     refetchInterval: 1_000,
   });
 
-  if (error) return <div className="p-2 down">Error: {(error as Error).message}</div>;
-  if (!data) return <div className="p-2 dim">Loading macro data…</div>;
+  if (error) return <div className="p-2 down">错误: {(error as Error).message}</div>;
+  if (!data) return <div className="p-2 dim">加载宏观数据中…</div>;
 
   return (
     <div>
       <div className="px-2 py-1 dim text-[10px] uppercase flex justify-between">
-        <span>US Treasury Yield Curve</span>
+        <span>美债收益率曲线</span>
         {data.vix !== null && (
           <span className="cursor-pointer" onClick={() => setActiveSymbol("^VIX")}>
             VIX <Flash value={data.vix} className="amber">{fmt(data.vix, 2)}</Flash>
@@ -48,7 +48,7 @@ export default function MacroWidget() {
       </div>
       <table className="data-table">
         <thead>
-          <tr><th>Index / Commodity</th><th>Last</th><th>Chg%</th></tr>
+          <tr><th>指数 / 商品</th><th>最新</th><th>涨跌%</th></tr>
         </thead>
         <tbody>
           {data.indexes.map((q) => (

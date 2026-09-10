@@ -3,13 +3,13 @@ import "./globals.css";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  title: "OpenTerminal",
-  description: "Bloomberg-style financial terminal on free data sources",
+  title: "OpenTerminal · 行情终端",
+  description: "基于免费公开数据源的金融行情终端",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body>
         <Providers>{children}</Providers>
       </body>

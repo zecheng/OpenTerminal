@@ -28,11 +28,11 @@ export default function OptionsWidget({ widget }: { widget: WidgetInstance }) {
   if (error)
     return (
       <div className="p-2">
-        <div className="down">Option chain unavailable for {symbol}</div>
+        <div className="down">{symbol} 期权链不可用</div>
         <div className="dim">{(error as Error).message}</div>
       </div>
     );
-  if (isLoading || !data) return <div className="p-2 dim">Loading option chain…</div>;
+  if (isLoading || !data) return <div className="p-2 dim">加载期权链中…</div>;
 
   const byStrike = new Map<number, { call?: OptionRow; put?: OptionRow }>();
   for (const c of data.calls) if (c.strike !== null) byStrike.set(c.strike, { ...byStrike.get(c.strike), call: c });
@@ -42,9 +42,9 @@ export default function OptionsWidget({ widget }: { widget: WidgetInstance }) {
   return (
     <div>
       <div className="flex gap-2 items-center p-1">
-        <span className="dim">Underlying</span>
+        <span className="dim">标的价</span>
         <span className="amber font-bold">{fmt(data.underlyingPrice)}</span>
-        <span className="dim ml-2">Expiry</span>
+        <span className="dim ml-2">到期日</span>
         <select
           value={expiry ?? data.selectedDate ?? ""}
           onChange={(e) => setExpiry(e.target.value)}
@@ -57,14 +57,14 @@ export default function OptionsWidget({ widget }: { widget: WidgetInstance }) {
       <table className="data-table">
         <thead>
           <tr>
-            <th colSpan={5} className="!text-center up">CALLS</th>
-            <th className="!text-center">STRIKE</th>
-            <th colSpan={5} className="!text-center down">PUTS</th>
+            <th colSpan={5} className="!text-center up">认购</th>
+            <th className="!text-center">行权价</th>
+            <th colSpan={5} className="!text-center down">认沽</th>
           </tr>
           <tr>
-            <th>Last</th><th>Bid</th><th>Ask</th><th>Vol</th><th>OI · IV</th>
+            <th>最新</th><th>买价</th><th>卖价</th><th>量</th><th>持仓·隐波</th>
             <th></th>
-            <th>Last</th><th>Bid</th><th>Ask</th><th>Vol</th><th>OI · IV</th>
+            <th>最新</th><th>买价</th><th>卖价</th><th>量</th><th>持仓·隐波</th>
           </tr>
         </thead>
         <tbody>
